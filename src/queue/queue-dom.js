@@ -10,38 +10,64 @@ const dequeue = document.querySelector('.btn-take-dequeue');
 const queue = new Queue();
 
 const clearQueueInput = () => {
-  // ... your code goes here
+  queueInput.value = ""
 };
 
 const generateListQueue = () => {
-  // ... your code goes here
-};
+  queueUL.innerHTML = "";
+  warningBottomQueue.style.display = "none";
+  warningTopQueue.style.display = "none";
 
-generateListQueue();
+  queue.display().forEach(queueItem => {
+    let li = document.createElement("li")
+
+    li.classList.add("active")
+    li.innerHTML = queueItem
+
+    queueUL.appendChild(li)
+  })
+
+  for (let i = queue.display().length; i <= queue.MAX_SIZE; i++) {
+    let li = document.createElement("li")
+
+    li.classList.add("inactive")
+    li.innerHTML = '&nbsp;'
+
+    queueUL.appendChild(li)
+  }
+};
 
 const generateWarningQueue = (type) => {
   if (type === 'underflow') {
-    // ... your code goes here
+    warningBottomQueue.style.display = "block"
   } else if (type === 'overflow') {
-    // ... your code goes here
+    warningTopQueue.style.display = "block"
   }
 };
 
 const addToQueue = () => {
   try {
-    // ... your code goes here
+    queue.enqueue(queueInput.value)
+    clearQueueInput()
+    generateListQueue()
   } catch (error) {
-    // there was an overflow error, handle it
+    generateWarningQueue("overflow")
   }
 };
 
 const removeFromQueue = () => {
   try {
-    // ... your code goes here
+    let element = queue.dequeue()
+    generateListQueue()
   } catch (error) {
-    // there was an underflow error, handle it
+    generateWarningQueue("underflow")
   }
 };
 
+// init
+
+warningBottomQueue.innerHTML = "underflow"
+warningTopQueue.innerHTML = "overflow"
+generateListQueue();
 addQueue.addEventListener('click', addToQueue);
 dequeue.addEventListener('click', removeFromQueue);

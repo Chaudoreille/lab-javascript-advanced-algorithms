@@ -5,7 +5,7 @@ class Queue {
   }
 
   canEnqueue() {
-    return this.queueControl.length < this.MAX_SIZE
+    return this.queueControl.length <= this.MAX_SIZE
   }
 
   isEmpty() {
